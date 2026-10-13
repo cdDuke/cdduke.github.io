@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Руслан — портфолио: сайты, приложения, Telegram-боты</title>
+    <meta name="description" content="Портфолио frontend-разработчика: анимированные сайты, React-приложения и Telegram-боты на Python. Живые демо и исходный код." />
+    <meta property="og:title" content="Руслан — портфолио" />
+    <meta property="og:description" content="Анимированные сайты, React-приложения и Telegram-боты. Живые демо и код." />
+    <meta property="og:image" content="https://cdduke.github.io/img/og.jpg" />
+    <meta name="theme-color" content="#0b0b10" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230b0b10'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='900' font-size='34' text-anchor='middle' fill='%23d7ff3d'%3ER%3C/text%3E%3C/svg%3E" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0b0b10;
+        --bg-2: #13131b;
+        --card: #15151e;
+        --fg: #f3f1ec;
+        --muted: #9a98a6;
+        --line: rgba(243, 241, 236, 0.1);
+        --lime: #d7ff3d;
+        --violet: #8b6cff;
+        --pink: #ff5c93;
+        --head: 'Unbounded', system-ui, sans-serif;
+        --body: 'Manrope', system-ui, sans-serif;
+        --pad: clamp(16px, 4vw, 56px);
+        --ease: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+      body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+      img { display: block; max-width: 100%; }
+      :focus-visible { outline: 2px solid var(--lime); outline-offset: 3px; border-radius: 8px; }
+      ::selection { background: var(--lime); color: var(--bg); }
+
+      .noise { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.5;
+        background: radial-gradient(700px 500px at 85% -10%, rgba(139, 108, 255, 0.28), transparent 70%),
+                    radial-gradient(600px 500px at -10% 40%, rgba(215, 255, 61, 0.12), transparent 70%); }
+
+      /* header */
+      .header { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 20px; padding: 16px var(--pad);
+        background: rgba(11, 11, 16, 0.7); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+      .logo { font-family: var(--head); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; }
+      .logo span { color: var(--lime); }
+      .header nav { display: flex; gap: 24px; margin-left: auto; font-weight: 600; font-size: 15px; color: var(--muted); }
+      .header nav a:hover { color: var(--fg); }
+      .lang { display: flex; padding: 3px; border-radius: 999px; border: 1px solid var(--line); }
+      .lang button { height: 30px; min-width: 38px; border-radius: 999px; font-size: 12px; font-weight: 700; color: var(--muted); }
+      .lang button.is-on { background: var(--fg); color: var(--bg); }
+
+      /* hero */
+      .hero { position: relative; max-width: 1280px; margin: 0 auto; padding: clamp(64px, 11vw, 140px) var(--pad) clamp(48px, 7vw, 90px); }
+      .kicker { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; color: var(--muted); }
+      .kicker i { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 0 rgba(215, 255, 61, 0.6); animation: pulse 2s infinite; }
+      @keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(215, 255, 61, 0); } 100% { box-shadow: 0 0 0 0 rgba(215, 255, 61, 0); } }
+      h1 { margin: 26px 0 24px; font-family: var(--head); font-weight: 800; font-size: clamp(36px, 6.4vw, 92px); line-height: 1.02; letter-spacing: -0.04em; text-transform: uppercase; }
+      h1 .grad { background: linear-gradient(90deg, var(--lime), #7dffcf 40%, var(--violet) 80%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      h1 .line { display: block; overflow: hidden; }
+      h1 .line > span { display: inline-block; transform: translateY(105%); animation: rise 1s var(--ease) forwards; }
+      h1 .line:nth-child(2) > span { animation-delay: 0.1s; }
+      h1 .line:nth-child(3) > span { animation-delay: 0.2s; }
+      @keyframes rise { to { transform: none; } }
+      .lead { max-width: 620px; font-size: clamp(17px, 1.5vw, 20px); color: var(--muted); }
+      .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+      .btn { display: inline-flex; align-items: center; gap: 8px; height: 52px; padding: 0 24px; border-radius: 999px; font-weight: 700; transition: transform 0.3s var(--ease), background 0.3s, border-color 0.3s; }
+      .btn:hover { transform: translateY(-2px); }
+      .btn--lime { background: var(--lime); color: var(--bg); }
+      .btn--line { border: 1px solid var(--line); }
+      .btn--line:hover { border-color: var(--fg); }
+      .stats { display: flex; flex-wrap: wrap; gap: 14px 48px; margin-top: 56px; padding-top: 28px; border-top: 1px solid var(--line); }
+      .stats strong { display: block; font-family: var(--head); font-size: clamp(30px, 3.6vw, 46px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+      .stats span { color: var(--muted); font-size: 14px; }
+
+      /* marquee */
+      .marquee { overflow: hidden; border-block: 1px solid var(--line); padding: 18px 0; }
+      .marquee__track { display: flex; gap: 48px; width: max-content; animation: marquee 38s linear infinite; }
+      .marquee span { font-family: var(--head); font-weight: 700; font-size: clamp(18px, 2.2vw, 28px); color: var(--muted); white-space: nowrap; }
+      .marquee b { color: var(--lime); font-weight: 700; }
+      @keyframes marquee { to { transform: translateX(-50%); } }
+
+      /* work */
+      .work { max-width: 1280px; margin: 0 auto; padding: clamp(64px, 9vw, 120px) var(--pad); }
+      .work__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px; margin-bottom: 36px; }
+      h2 { font-family: var(--head); font-weight: 800; font-size: clamp(30px, 4.4vw, 60px); line-height: 1; letter-spacing: -0.04em; text-transform: uppercase; }
+      .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+      .chip { height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line); font-weight: 600; font-size: 14px; color: var(--muted); transition: background 0.3s, color 0.3s; }
+      .chip.is-on { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+      .chip em { font-style: normal; opacity: 0.6; margin-left: 4px; }
+
+      .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+      .card { position: relative; display: flex; flex-direction: column; border-radius: 26px; background: var(--card); border: 1px solid var(--line); overflow: hidden;
+        opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), border-color 0.3s; }
+      .card.is-in { opacity: 1; transform: none; }
+      .card.is-hidden { display: none; }
+      .card:hover { border-color: rgba(243, 241, 236, 0.28); }
+      .card__media { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #0f0f15; }
+      .card__shot { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform 1s var(--ease); }
+      .card:hover .card__shot { transform: scale(1.04); }
+      .card[data-type='bot'] .card__media { aspect-ratio: 2 / 1; }
+      .card__phone { position: absolute; right: 18px; bottom: -40px; width: 20%; border-radius: 16px; border: 4px solid #0b0b10; box-shadow: 0 20px 40px -10px #000;
+        transition: transform 0.8s var(--ease); }
+      .card:hover .card__phone { transform: translateY(-22px) rotate(-3deg); }
+      .card__type { position: absolute; left: 16px; top: 16px; padding: 5px 12px; border-radius: 999px; background: rgba(11, 11, 16, 0.75); backdrop-filter: blur(8px); font-size: 12px; font-weight: 700; }
+      .card__body { display: flex; flex-direction: column; gap: 10px; flex: 1; padding: 22px 24px 24px; }
+      .card h3 { font-family: var(--head); font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+      .card p { color: var(--muted); font-size: 15px; }
+      .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+      .tags span { padding: 4px 10px; border-radius: 8px; background: rgba(243, 241, 236, 0.06); font-size: 12.5px; font-weight: 600; color: #cfcdd8; }
+      .card__links { display: flex; gap: 8px; margin-top: auto; padding-top: 10px; }
+      .card__links a { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 16px; border-radius: 999px; font-size: 14px; font-weight: 700; border: 1px solid var(--line); transition: background 0.3s, color 0.3s; }
+      .card__links a:first-child { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+      .card__links a:hover { background: var(--lime); color: var(--bg); border-color: var(--lime); }
+
+      /* about */
+      .about { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad) clamp(64px, 9vw, 120px); display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+      .about p { color: var(--muted); font-size: 18px; margin-top: 18px; }
+      .skills { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; align-content: start; }
+      .skill { padding: 18px 20px; border-radius: 18px; background: var(--bg-2); border: 1px solid var(--line); }
+      .skill b { display: block; font-family: var(--head); font-size: 15px; margin-bottom: 4px; }
+      .skill span { font-size: 14px; color: var(--muted); }
+
+      .footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: 32px var(--pad); border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; }
+      .footer a:hover { color: var(--fg); }
+
+      @media (max-width: 860px) {
+        .header nav { display: none; }
+        .lang { margin-left: auto; }
+        .grid, .about { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 480px) { .skills { grid-template-columns: 1fr; } }
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+        .card { opacity: 1; transform: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <header class="header">
+      <a href="#top" class="logo">Ruslan<span>.</span>dev</a>
+      <nav aria-label="Main">
+        <a href="#work" data-t="nav.work">Проекты</a>
+        <a href="#about" data-t="nav.about">Обо мне</a>
+        <a href="https://github.com/cdDuke">GitHub</a>
+      </nav>
+      <div class="lang" role="group" aria-label="Language">
+        <button data-lang="ru" class="is-on" aria-pressed="true">RU</button><button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <p class="kicker"><i></i><span data-t="hero.kicker">Открыт к предложениям о работе</span></p>
+        <h1>
+          <span class="line"><span data-t="hero.l1">Делаю живые</span></span>
+          <span class="line"><span class="grad" data-t="hero.l2">интерфейсы</span></span>
+          <span class="line"><span data-t="hero.l3">и Telegram-ботов</span></span>
+        </h1>
+        <p class="lead" data-t="hero.lead">Frontend-разработчик: анимированные сайты, React-приложения и боты на Python. У каждого проекта — живое демо, исходный код, адаптив под телефон и две языковые версии.</p>
+        <div class="hero__cta">
+          <a href="#work" class="btn btn--lime" data-t="hero.cta">Смотреть проекты ↓</a>
+          <a href="https://github.com/cdDuke" class="btn btn--line">GitHub ↗</a>
+        </div>
+        <div class="stats">
+          <div><strong>9</strong><span data-t="s.sites">сайтов и приложений</span></div>
+          <div><strong>3</strong><span data-t="s.bots">Telegram-бота</span></div>
+          <div><strong>RU / EN</strong><span data-t="s.lang">в каждом проекте</span></div>
+          <div><strong>390–1440</strong><span data-t="s.resp">px — проверено на всех экранах</span></div>
+        </div>
+      </section>
+
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>TypeScript <b>✦</b></span><span>React <b>✦</b></span><span>GSAP <b>✦</b></span><span>Three.js <b>✦</b></span><span>Vite <b>✦</b></span><span>Zustand <b>✦</b></span><span>Python <b>✦</b></span><span>aiogram <b>✦</b></span><span>SQLAlchemy <b>✦</b></span><span>OpenAI API <b>✦</b></span>
+          <span>TypeScript <b>✦</b></span><span>React <b>✦</b></span><span>GSAP <b>✦</b></span><span>Three.js <b>✦</b></span><span>Vite <b>✦</b></span><span>Zustand <b>✦</b></span><span>Python <b>✦</b></span><span>aiogram <b>✦</b></span><span>SQLAlchemy <b>✦</b></span><span>OpenAI API <b>✦</b></span>
+        </div>
+      </div>
+
+      <section class="work" id="work">
+        <div class="work__head">
+          <h2 data-t="work.title">Проекты</h2>
+          <div class="chips" role="group" aria-label="Filter">
+            <button class="chip is-on" data-filter="all"><span data-t="f.all">Все</span><em>12</em></button>
+            <button class="chip" data-filter="site"><span data-t="f.site">Сайты</span><em>6</em></button>
+            <button class="chip" data-filter="app"><span data-t="f.app">Приложения</span><em>3</em></button>
+            <button class="chip" data-filter="bot"><span data-t="f.bot">Боты</span><em>3</em></button>
+          </div>
+        </div>
+        <div class="grid" id="grid"></div>
+      </section>
+
+      <section class="about" id="about">
+        <div>
+          <h2 data-t="about.title">Обо мне</h2>
+          <p data-t="about.p1">Люблю, когда интерфейс ощущается живым: продуманные анимации, плавный скролл, мгновенный отклик. При этом слежу за доступностью, производительностью и тем, как всё выглядит на телефоне.</p>
+          <p data-t="about.p2">Все проекты на этой странице сделаны с нуля: без шаблонов и стоковых фото — иллюстрации нарисованы кодом (SVG, Canvas, WebGL).</p>
+        </div>
+        <div class="skills">
+          <div class="skill"><b>Frontend</b><span>TypeScript, React 19, Vite, HTML/CSS</span></div>
+          <div class="skill"><b data-t="sk.anim">Анимации</b><span>GSAP, ScrollTrigger, Motion, Lenis</span></div>
+          <div class="skill"><b>3D / Graphics</b><span>Three.js, GLSL, SVG, Canvas 2D</span></div>
+          <div class="skill"><b data-t="sk.state">Состояние</b><span>Zustand, Context, URL state</span></div>
+          <div class="skill"><b>Telegram</b><span>Python, aiogram 3, FSM</span></div>
+          <div class="skill"><b>Backend</b><span>SQLAlchemy, SQLite, APScheduler, OpenAI API</span></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 2026 Ruslan</span>
+      <a href="https://github.com/cdDuke">github.com/cdDuke</a>
+    </footer>
+
+    <script>
+      const P = [
+        { id: 'nova-studio', type: 'site', title: 'Nova Studio', tags: ['GSAP', 'Lenis', 'Vite'],
+          ru: 'Сайт креативного агентства: кастомный курсор, магнитные кнопки, горизонтальный скролл кейсов.',
+          en: 'Creative agency website: custom cursor, magnetic buttons, horizontal case-study scroll.' },
+        { id: 'orbit-saas', type: 'site', title: 'Orbit', tags: ['Three.js', 'GLSL', 'TypeScript'],
+          ru: 'Лендинг SaaS-платформы с 3D-глобусом на собственных шейдерах и «живой» bento-сеткой.',
+          en: 'SaaS landing with a custom-shader 3D globe and a live bento grid.' },
+        { id: 'taskflow', repo: 'taskflow-kanban', type: 'app', title: 'TaskFlow', tags: ['React', 'Zustand', 'dnd-kit'],
+          ru: 'Канбан-приложение: drag & drop мышью, пальцем и с клавиатуры, undo, тёмная/светлая тема.',
+          en: 'Kanban app: drag & drop with mouse, touch and keyboard, undo, dark/light theme.' },
+        { id: 'kvartal-estate', type: 'app', title: 'Kvartal', tags: ['React', 'TypeScript', 'SVG'],
+          ru: 'Поиск недвижимости: фильтры в URL, карта с ценами, генерируемые планировки, ипотека.',
+          en: 'Real-estate search: URL filters, price map, generated floor plans, mortgage calculator.' },
+        { id: 'skycast-weather', type: 'app', title: 'SkyCast', tags: ['React', 'API', 'Canvas'],
+          ru: 'Погода на реальном API: поиск городов, почасовой график, живой фон с дождём и снегом.',
+          en: 'Weather on a real API: city search, hourly chart, live rain and snow background.' },
+        { id: 'savor-restaurant', type: 'site', title: 'Savor', tags: ['GSAP', 'SplitText', 'DrawSVG'],
+          ru: 'Ресторан высокой кухни: меню с 3D-превью блюд, дегустационный сет, бронирование столика.',
+          en: 'Fine-dining site: menu with 3D dish preview, tasting set, table booking.' },
+        { id: 'voyage-travel', type: 'site', title: 'Voyage', tags: ['React', 'Motion', 'SVG'],
+          ru: 'Турагентство: пейзажи генерируются кодом, фильтры туров, избранное, бронирование.',
+          en: 'Travel agency: code-generated landscapes, tour filters, favourites, booking.' },
+        { id: 'pulse-fitness', type: 'site', title: 'Pulse', tags: ['GSAP', 'CSS', 'TypeScript'],
+          ru: 'Лендинг фитнес-приложения: CSS-телефон с живым UI, скролл-сторителлинг, генератор плана.',
+          en: 'Fitness app landing: CSS phone with live UI, scroll storytelling, plan generator.' },
+        { id: 'luma-coffee', type: 'site', title: 'Luma Coffee', tags: ['GSAP', 'Vite', 'SVG'],
+          ru: 'Магазин specialty-кофе: корзина с анимацией, гид по завариванию с таймером, подписка.',
+          en: 'Specialty coffee shop: animated cart, brew guide with timer, subscription.' },
+        { id: 'servereye-bot', type: 'bot', title: 'ServerEye', tags: ['Python', 'aiogram', 'APScheduler'],
+          ru: 'Мониторинг серверов в Telegram: ping/HTTP/TCP, uptime, графики, отчёты и тревоги.',
+          en: 'Server monitoring in Telegram: ping/HTTP/TCP, uptime, charts, reports and alerts.' },
+        { id: 'advokat-bot', repo: 'karmanny-advokat-bot', type: 'bot', title: 'Карманный Адвокат', titleEn: 'Pocket Lawyer', tags: ['Python', 'OpenAI', 'OCR'],
+          ru: 'AI-юрист для РФ и Казахстана: ответы по законам, проверка документов (OCR), претензии в DOCX/PDF.',
+          en: 'AI lawyer for Russia & Kazakhstan: legal answers, document checks (OCR), claims in DOCX/PDF.' },
+        { id: 'loveis-bot', type: 'bot', title: 'LoveIS', tags: ['Python', 'aiogram', 'OpenAI'],
+          ru: 'AI-помощник для отношений: ответы на сообщения, комплименты, свидания и подарки.',
+          en: 'AI relationship helper: message replies, compliments, dates and gift ideas.' },
+      ];
+
+      const T = {
+        en: {
+          'nav.work': 'Work', 'nav.about': 'About', 'hero.kicker': 'Open to job offers',
+          'hero.l1': 'I build lively', 'hero.l2': 'interfaces', 'hero.l3': 'and Telegram bots',
+          'hero.lead': 'Frontend developer: animated websites, React apps and Python bots. Every project has a live demo, source code, mobile layout and two languages.',
+          'hero.cta': 'See the work ↓', 's.sites': 'websites & apps', 's.bots': 'Telegram bots', 's.lang': 'in every project', 's.resp': 'px — tested on every screen',
+          'work.title': 'Work', 'f.all': 'All', 'f.site': 'Websites', 'f.app': 'Apps', 'f.bot': 'Bots',
+          'about.title': 'About',
+          'about.p1': 'I like interfaces that feel alive: considered motion, smooth scrolling, instant feedback — while keeping an eye on accessibility, performance and how it all works on a phone.',
+          'about.p2': 'Every project here is built from scratch: no templates or stock photos — the illustrations are drawn in code (SVG, Canvas, WebGL).',
+          'sk.anim': 'Motion', 'sk.state': 'State',
+          demo: 'Live demo', code: 'Code', type: { site: 'Website', app: 'App', bot: 'Telegram bot' },
+          title: 'Ruslan — portfolio: websites, apps, Telegram bots',
+        },
+        ru: { demo: 'Демо', code: 'Код', type: { site: 'Сайт', app: 'Приложение', bot: 'Telegram-бот' }, title: document.title },
+      };
+      const ruText = {};
+      document.querySelectorAll('[data-t]').forEach((el) => (ruText[el.dataset.t] = el.textContent));
+
+      let lang = 'ru';
+      try { if (localStorage.getItem('lang') === 'en') lang = 'en'; } catch (e) {}
+      let filter = 'all';
+      const grid = document.getElementById('grid');
+
+      function render() {
+        const L = T[lang];
+        grid.innerHTML = P.map((p) => {
+          const repo = p.repo || p.id;
+          const demo = p.type === 'bot' ? null : `https://cdduke.github.io/${repo}/`;
+          const phone = p.type === 'bot' ? '' : `<img class="card__phone" src="img/${p.id}-m.jpg" alt="" loading="lazy">`;
+          return `<article class="card${filter !== 'all' && p.type !== filter ? ' is-hidden' : ''}" data-type="${p.type}">
+            <a class="card__media" href="${demo || `https://github.com/cdDuke/${repo}`}" aria-label="${p.title}">
+              <img class="card__shot" src="img/${p.id}.jpg" alt="${p.title}" loading="lazy">${phone}
+              <span class="card__type">${L.type[p.type]}</span>
+            </a>
+            <div class="card__body">
+              <h3>${lang === 'en' && p.titleEn ? p.titleEn : p.title}</h3>
+              <p>${p[lang]}</p>
+              <div class="tags">${p.tags.map((t) => `<span>${t}</span>`).join('')}</div>
+              <div class="card__links">
+                ${demo ? `<a href="${demo}">▶ ${L.demo}</a>` : ''}
+                <a href="https://github.com/cdDuke/${repo}">⌘ ${L.code}</a>
+              </div>
+            </div>
+          </article>`;
+        }).join('');
+        observe();
+      }
+
+      function applyLang() {
+        document.documentElement.lang = lang;
+        document.title = T[lang].title;
+        document.querySelectorAll('[data-t]').forEach((el) => (el.textContent = lang === 'en' ? T.en[el.dataset.t] ?? ruText[el.dataset.t] : ruText[el.dataset.t]));
+        document.querySelectorAll('[data-lang]').forEach((b) => { b.classList.toggle('is-on', b.dataset.lang === lang); b.setAttribute('aria-pressed', b.dataset.lang === lang); });
+        render();
+      }
+
+      let io;
+      function observe() {
+        io?.disconnect();
+        io = new IntersectionObserver((entries) => entries.forEach((e) => e.isIntersecting && (e.target.classList.add('is-in'), io.unobserve(e.target))), { rootMargin: '0px 0px -8% 0px' });
+        document.querySelectorAll('.card:not(.is-hidden)').forEach((c, i) => { c.style.transitionDelay = `${(i % 2) * 0.08}s`; io.observe(c); });
+      }
+
+      document.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => {
+        lang = b.dataset.lang;
+        try { localStorage.setItem('lang', lang); } catch (e) {}
+        applyLang();
+      }));
+      document.querySelectorAll('[data-filter]').forEach((b) => b.addEventListener('click', () => {
+        filter = b.dataset.filter;
+        document.querySelectorAll('[data-filter]').forEach((x) => x.classList.toggle('is-on', x === b));
+        render();
+      }));
+
+      applyLang();
+    </script>
+  </body>
+</html>
